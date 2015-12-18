@@ -4,7 +4,7 @@
   "description": "MSSQL-Server lib",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tap test/tap.*.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,5 +12,8 @@
     "msnodesqlv8": "^0.1.14",
     "q": "^1.4.1",
     "winston": "^2.1.0"
+  },
+  "devDependencies": {
+    "tap": "^2.3.3"
   }
 }
