@@ -7,7 +7,7 @@ var connectionString =  `Driver={SQL Server Native Client 11.0};Server=db1-muc\\
 
 winston.level = 'error';
 var sql = new Sql(connectionString);
-//sql.logger = winston.log;
+sql.logger = winston.log;
 
 
 tap.test("Test simple query", function(t) {
@@ -26,8 +26,8 @@ tap.test("Test simple query", function(t) {
 
 tap.test("Test procedure 1", function(t) {
     sql.procedure('dbo.sp_test1')
-    .then(function(results, output) { 
-        t.same([{col1:'Test1'}], results)
+    .then(function(data) { 
+        t.same([{col1:'Test1'}], data.result)
         t.end()
     })
     .catch(function(err) {
@@ -38,8 +38,8 @@ tap.test("Test procedure 1", function(t) {
 
 tap.test("Test procedure 2", function(t) {
     sql.procedure('dbo.sp_test2', 'Test2')
-    .then(function(results, output) { 
-        t.same([{col1:'Test2'}], results)
+    .then(function(data) { 
+        t.same([{col1:'Test2'}], data.result)
         t.end()
     })
     .catch(function(err) {
@@ -61,13 +61,14 @@ tap.test("Test transaction", function(t) {
         t.end()
     })
     .catch(function(err) {
+        sql.query('DELETE dbo.Table1 where id in(-9991, -9992, -9993, -9994, -9995)', 'cleanup')
         t.error(err);
         t.end()
     })
 })
 
 tap.test("Test bulk", function(t) {
-     sql.bulkInsert('dbo.[Ta[b]]le1]', [{
+     sql.bulkInsert('dbo.Table1', [{
          ID:-9981,
          Col1: 'col1 9981',
          Col2: 'col2 9981'
@@ -93,6 +94,7 @@ tap.test("Test bulk", function(t) {
         t.end()
     })
     .catch(function(err) {
+        sql.query('DELETE dbo.Table1 where id in(-9981, -9982, -9983, -9984, -9985)', 'cleanup')
         t.error(err);
         t.end()
     })
