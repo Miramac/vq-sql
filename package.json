@@ -9,7 +9,7 @@
   "author": "Fabian Roloff <fabian.roloff@vocatus.de>",
   "license": "ISC",
   "dependencies": {
-    "msnodesqlv8": "^0.1.28",
+    "msnodesqlv8": "^0.1.35",
     "q": "^1.4.1"
   },
   "devDependencies": {
