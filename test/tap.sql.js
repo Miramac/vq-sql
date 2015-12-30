@@ -10,8 +10,32 @@ var sql = new Sql(connectionString);
 sql.logger = winston.log;
 
 
-tap.test("Test simple query", function(t) {
+tap.test("Test select query", function(t) {
     sql.query('SELECT id FROM dbo.Table1 where id=1')
+    .then(function(data) { 
+        t.same([{id:1}], data)
+        t.end()
+    })
+    .catch(function(err) {
+        t.error(err);
+        t.end()
+    })
+})
+
+tap.test("Test select query with parameter", function(t) {
+    sql.query('SELECT id FROM dbo.Table1 where id=?', sql.Integer(1))
+    .then(function(data) { 
+        t.same([{id:1}], data)
+        t.end()
+    })
+    .catch(function(err) {
+        t.error(err);
+        t.end()
+    })
+})
+
+tap.test("Test select query with text parameter", function(t) {
+    sql.query('SELECT id FROM dbo.Table1 where Col1=?', ['Col1'])
     .then(function(data) { 
         t.same([{id:1}], data)
         t.end()
